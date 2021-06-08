@@ -14,9 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from webhooks.views import WebhookHandlerView, RegisterDeviceView
+from webhooks.views import WebhookHandlerView
 
 urlpatterns = [
     path('webhook/', WebhookHandlerView.as_view()),
-    path('device/', RegisterDeviceView.as_view())
 ]
