@@ -35,7 +35,6 @@ class WebhookHandlerView(APIView):
 
         if type == "voip":
             try:
-                guid = request.data["guid"]
                 payload = Payload(badge=1, custom={"guid": guid})
                 client = APNsClient(os.getenv('APPLE_VOIP_CERT_PATH'), use_sandbox=bool(os.getenv('APPLE_SANDBOX')), use_alternative_port=False)
                 client.send_notification(token, payload)
