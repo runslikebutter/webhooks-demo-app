@@ -14,7 +14,11 @@ voip_token = None
 class WebhookHandlerView(APIView):
 
     def post(self, request):
-        guid = request.data["guid"]
+        print(request.data)
+        guid = request.data.get("guid", None)
+        if guid is None:
+            call = request.data.get("call", None)
+            guid = call.get("guid", None)
         token = request.GET.get('token')
         # type values: voip/apns/fcm
         type = request.GET.get('type')
@@ -34,7 +38,7 @@ class WebhookHandlerView(APIView):
                 guid = request.data["guid"]
                 payload = Payload(badge=1, custom={"guid": guid})
                 client = APNsClient(os.getenv('APPLE_VOIP_CERT_PATH'), use_sandbox=bool(os.getenv('APPLE_SANDBOX')), use_alternative_port=False)
-                client.send_notification(token, payload)
+                client.send_notification(token, payload, topic="com.butterflymx.butterflymx.voip")
             except Exception as ex:
                 print("Exception - ", traceback.format_exc())
 
