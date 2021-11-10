@@ -53,7 +53,10 @@ class WebhookHandlerView(APIView):
 
         if type == "apns":
             try:
-                payload = Payload(badge=1, alert="New call", custom={"guid": guid})
+                if push_type == "call":
+                    payload = Payload(badge=1, alert="New call", custom={"guid": guid})
+                else:
+                    payload = Payload(badge=1, alert="Call status: " + call_status, custom={"guid": guid})
                 client = APNsClient(os.getenv('APPLE_APNS_CERT_PATH'), use_sandbox=bool(os.getenv('APPLE_SANDBOX')), use_alternative_port=False)
                 client.send_notification(token, payload, topic="com.butterflymx.sdk.demo")
             except Exception as ex:
