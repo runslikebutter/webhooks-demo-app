@@ -41,5 +41,14 @@ class WebhookHandlerView(APIView):
             except Exception as ex:
                 print("Exception - ", traceback.format_exc())
 
+        if type == "apns":
+            try:
+                payload = Payload(badge=1, alert="New call", custom={"guid": guid})
+                client = APNsClient(os.getenv('APPLE_APNS_CERT_PATH'), use_sandbox=bool(os.getenv('APPLE_SANDBOX')), use_alternative_port=False)
+                client.send_notification(token, payload)
+            except Exception as ex:
+                print("Exception - ", traceback.format_exc())
+
+
         return Response(status=status.HTTP_200_OK)
 
