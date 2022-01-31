@@ -5,6 +5,7 @@ services:
     environment:
       - FCM_KEY=value here
       - APPLE_VOIP_CERT_PATH=./voip.pem
+      - APPLE_APNS_CERT_PATH=./apns.pem
       - APPLE_SANDBOX=1
     build: .
     command: python manage.py runserver 0.0.0.0:8000
