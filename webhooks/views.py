@@ -32,13 +32,11 @@ class WebhookHandlerView(APIView):
         print("call_status - ", call_status)
         if type == "fcm":
             try:
-                push_service = FCMNotification(api_key=os.getenv('FCM_KEY'))
-                if push_type == "call":
-                    result = push_service.notify_single_device(registration_id=token,
-                                                               data_message={"guid": guid, "call_status": call_status})
-                else:
-                    result = push_service.notify_single_device(registration_id=token,
-                                                               data_message={"guid": guid, "call_status": call_status})
+                # push_service = FCMNotification(api_key=os.getenv('FCM_KEY'))
+                push_service = FCMNotification(service_account_file="./butterflymx.com_api-project-1038891764524-firebase-adminsdk-zb62w-3599e02afd.json", project_id="butterflymx.com:api-project-1038891764524")
+                    
+                result = push_service.notify(fcm_token=token, data_payload={"guid": guid, "call_status": call_status})
+
                 print(result)
             except Exception as ex:
                 print("Exception - ", traceback.format_exc())
